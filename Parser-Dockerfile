@@ -1,0 +1,14 @@
+FROM python:3.10 AS parser_image
+WORKDIR /code
+COPY ./parser-requirements.txt /code/requirements.txt
+RUN apt-get update && apt-get install -y \
+    firefox-esr \
+    && apt-get clean
+ENV GECKODRIVER_VERSION="v0.34.0"
+RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz" \
+    && tar -xzf geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz -C /usr/local/bin \
+    && rm geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+COPY ./src/parser/app /code/app
+COPY ./src/common /code/common
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

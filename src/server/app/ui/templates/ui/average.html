@@ -1,0 +1,49 @@
+{% extends 'ui/base.html' %}
+
+{% block content %}
+<h2>{{ page_title }}</h2>
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .form-section {
+        width: 48%; 
+    }
+
+    .form-section select {
+        width: 100%; 
+    }
+
+    .form-section input, 
+    .form-section textarea {
+        width: 100%; /
+    }
+
+    .form-section .form-group {
+        margin-bottom: 1rem; 
+    }
+</style>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-container">
+        <div class="form-section">
+            {{ form.as_p }}
+        </div>
+    </div>
+    <button type="submit" name="analytics_button" class="btn btn-primary">Отправить</button>
+    <button type="submit" name="view_button" class="btn btn-primary">Посмотреть результаты</button>
+</form>
+
+{% if have_answer %}
+    <h1>Результат</h1>
+    <ul>
+        {% for name, value in results %}
+            <li>{{ name }}: {{ value }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

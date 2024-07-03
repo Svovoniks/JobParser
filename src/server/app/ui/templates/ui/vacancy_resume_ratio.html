@@ -1,0 +1,53 @@
+{% extends 'ui/base.html' %}
+
+{% block content %}
+<h2>Ваканиcи vs. Резюме</h2>
+
+<style>
+    .form-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .form-section {
+        width: 48%; 
+    }
+
+    .form-section select {
+        width: 100%; 
+    }
+
+    .form-section input, 
+    .form-section textarea {
+        width: 100%; /
+    }
+
+    .form-section .form-group {
+        margin-bottom: 1rem; 
+    }
+</style>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-container">
+        <div class="form-section">
+            <h3>Резюме</h3>
+            {{ resume_form.as_p }}
+        </div>
+        <div class="form-section">
+            <h3>Ваканиcя</h3>
+            {{ vacancy_form.as_p }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Отправить</button>
+</form>
+
+{% if have_answer %}
+    <h1>Результат</h1>
+    <ul>
+        <li>Колличество вакансий: {{ number_of_vacancies }}</li>
+        <li>Колличество резюме: {{ number_of_resumes }}</li>
+        <li>Резюме на вакансию: {{ resume_vacancy }}</li>
+    </ul>
+{% endif %}
+{% endblock %}

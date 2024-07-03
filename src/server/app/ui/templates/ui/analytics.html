@@ -1,0 +1,41 @@
+{% extends "ui/base.html" %}
+
+{% block content %}
+<style>
+    .btn {
+        background-color: #007bff; 
+        color: white; 
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        width: 100%; 
+        box-sizing: border-box;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    .button-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .button-list a {
+        text-decoration: none;
+    }
+</style>
+
+<div class="button-list">
+    {% for button in buttons %}
+        <a href="{{ button.url }}">
+            <button class="btn">{{ button.label }}</button>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

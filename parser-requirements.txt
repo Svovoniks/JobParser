@@ -1,0 +1,9 @@
+pydantic~=2.4.2
+uvicorn~=0.23.2
+fastapi~=0.104.0
+selenium
+psycopg2-binary
+redis
+requests
+celery
+SQLAlchemy

@@ -1,0 +1,63 @@
+version: '3.6'
+
+services:
+  parser_server:
+    image: parser_image
+    container_name: parser_local
+    volumes:
+      - ./parser-requirements.txt:/code/requirements.txt
+      - ./src/parser/app:/code/app
+      - ./src/common:/code/common
+    ports:
+      - '8000:8000'
+    env_file:
+      - .env
+    depends_on:
+      - dataBase
+    build: 
+      context: .
+      dockerfile: Parser-Dockerfile
+  
+  redis:
+    image: redis:latest
+    container_name: redis
+
+  worker:
+    image: parser_image
+    container_name: celery_worker
+    command: celery -A app.celery_app.celery_app worker --loglevel=info
+    env_file:
+      - .env
+    depends_on:
+      - redis
+  
+  ui_server:
+    image: ui_image
+    container_name: uiServer_local
+    volumes:
+      - ./server-requirements.txt:/code/requirements.txt
+      - ./src/server/app:/code/app
+      - ./src/common:/code/app/common
+    ports:
+      - '8001:8001'
+    env_file:
+      - .env
+    depends_on:
+      # - parser_server
+      - dataBase
+    build: 
+      context: .
+      dockerfile: UI-Dockerfile
+
+  dataBase:
+    image: postgres
+    restart: always
+    container_name: dataBase
+    env_file:
+    - .env
+    ports:
+      - '5432:5432'
+    build: 
+      context: .
+      dockerfile: DB-Dockerfile
+

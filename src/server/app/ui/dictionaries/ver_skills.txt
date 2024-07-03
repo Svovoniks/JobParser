@@ -1,0 +1,10 @@
+845 MS Excel
+598 HTML
+1252 SQL
+674 JavaScript
+1114 Python
+3215 Git
+2350 ООП
+153 AutoCAD
+99 Scrum
+2097 Копирайтинг

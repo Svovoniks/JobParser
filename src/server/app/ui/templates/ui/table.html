@@ -1,0 +1,27 @@
+{% extends 'ui/base.html' %}
+
+{% block content %}
+<h1>{{ page_title }}</h1>
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+        <tr>
+            {% for col in columns %}
+                <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">{{ col }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in rows %}
+            <tr>
+            {% for item, href in row %}
+                {% if href == '' %}
+                    <td style="border: 1px solid #ddd; padding: 8px;">{{ item }}</td>
+                {% else %}
+                    <td style="border: 1px solid #ddd; padding: 8px;"><a href="{{ href }}">{{ item }}</a></td>
+                {% endif %}
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

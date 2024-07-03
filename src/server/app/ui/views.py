@@ -90,9 +90,9 @@ def tasks(request):
 
 def analytics(request):
     buttons = [
-        {'label': 'Vacancy to resume ratio', 'url': 'vacancy_resume_ratio/'},
-        {'label': 'Resume averages', 'url': 'resume_averages/'},
-        {'label': 'Vacancy averges', 'url': 'vacancy_averages/'},
+        {'label': 'Отношение резюме к вакансиям', 'url': 'vacancy_resume_ratio/'},
+        {'label': 'Анализ резюме', 'url': 'resume_averages/'},
+        {'label': 'Анализ вакансий', 'url': 'vacancy_averages/'},
     ]
     return render(request, 'ui/analytics.html', {'buttons': buttons})
 

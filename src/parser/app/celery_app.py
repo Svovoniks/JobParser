@@ -34,13 +34,3 @@ def start_parsing_vacancies(json_:  dict, task_idx: int):
         db.add_vacancy(i)
     
     db.update_task('finished', task_idx)
-
-
-@celery_app.task
-def get_vacancy(ls: list):
-    logging.info('Proceessing batch')
-    db = DataBase()
-    for i in ls:
-        vc = HH_parser()._get_vacancy_by_id(i)
-        if vc != None:
-            db.add_vacancy(vc)

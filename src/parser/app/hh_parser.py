@@ -105,24 +105,3 @@ class HH_parser:
         
         return resumes
     
-# res = HH_parser().get_resumes(ResumeRequest({'text':'java backend developer', 'search_status':'Активно ищет работу'}))
-# with open('res.txt', 'w', encoding='utf-8') as file:
-#     for i in res:
-#         file.write(f"{repr(i)}\n")
-# import re
-# HH_parser().get_resumes(ResumeRequest())
-# with open('hh_search.txt', "w", encoding='utf-8') as file:
-#     with open('file.html', encoding= 'utf-8') as readFile
-#         rr = f'<label class="bloko-checkbox"[^<]+<[^<]+value="(.+)"[^.|.]+?novafilter-title">(.+)<'
-#         for i in re.findall(rr, readFile.read()):
-#             file.write(f"{i[0]} {i[1]}\n")
-#             print(f'{i[0]} {i[1]}')
-# import json
-# js = requests.get('https://api.hh.ru/skills')
-# with open('sills.json', 'w', encoding='utf-8') as file:
-#     json.dump(js.json(), file, ensure_ascii=False)
-
-# res = HH_parser().get_vacancies(VacancyRequest({'text':'java backend developer'}))
-# with open('vacancies.txt', 'w', encoding='utf-8') as file:
-#         file.write(f"{repr(i)}\n")
-#     for i in res:

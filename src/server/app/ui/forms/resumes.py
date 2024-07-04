@@ -62,7 +62,7 @@ class ResumeRequestForm(forms.Form):
     salary_to = forms.IntegerField(required=False, label='Зарплата до')
     skills = forms.MultipleChoiceField(choices=SKILLS_CHOICES, widget=forms.SelectMultiple, required=False, label='Навыки')
     area = forms.MultipleChoiceField(choices=AREA_CHOICES, widget=forms.SelectMultiple, required=False, label='Район')
-    search_status = forms.MultipleChoiceField(choices=SEARCH_STATUS_CHOICES, widget=forms.SelectMultiple, required=False, label='Статус поиска')
+    job_search_status = forms.MultipleChoiceField(choices=SEARCH_STATUS_CHOICES, widget=forms.SelectMultiple, required=False, label='Статус поиска')
 
     def to_json(self):
         cleaned_data = self.cleaned_data

@@ -223,7 +223,8 @@ def render_resume_view(render_request, resume_request: ResumeRequest):
 def resume_averages(request):
     have_answer = False
     results = []
-
+    print('lol')
+    
     if request.method == 'POST':
         form = ResumeFilterForm(request.POST)
         if form.is_valid():

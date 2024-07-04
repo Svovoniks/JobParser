@@ -1,4 +1,7 @@
+from typing import Any, Mapping
 from django import forms
+from django.forms.renderers import BaseRenderer
+from django.forms.utils import ErrorList
 from common.database import DataBase, vacancy_table, role_table, skill_table
 
 EMPLOYMENT_CHOICES = (
@@ -123,7 +126,17 @@ class VacancyFilterForm(forms.Form):
 
     )
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.update()
     
+    def update(self):
+        self.fields['area'] = forms.MultipleChoiceField(choices=get_choices(vacancy_table.c.area), widget=forms.SelectMultiple, label='Место работы', required=False)
+        self.fields['experience'] = forms.MultipleChoiceField(choices=get_choices(vacancy_table.c.experience), widget=forms.SelectMultiple, label='Опыт', required=False)
+        self.fields['employer'] = forms.MultipleChoiceField(choices=get_choices(vacancy_table.c.employer), widget=forms.SelectMultiple, label='Компания', required=False)
+        self.fields['roles'] = forms.MultipleChoiceField(choices=get_choices(role_table.c.role), widget=forms.SelectMultiple, label='Профессия', required=False)
+        self.fields['skills'] = forms.MultipleChoiceField(choices=get_choices(skill_table.c.skill), widget=forms.SelectMultiple, label='Навыки', required=False)
+        
     def to_json(self):
         cleaned_data = self.cleaned_data
         for i in cleaned_data:

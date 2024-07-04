@@ -91,7 +91,17 @@ class ResumeFilterForm(forms.Form):
     salary_to = forms.IntegerField(required=False, label='Зарплата до')
     skills = forms.MultipleChoiceField(choices=get_choices(skill_table.c.skill), widget=forms.SelectMultiple, required=False, label='Навыки')
     search_status = forms.ChoiceField(choices=get_choices(resume_table.c.search_status), required=False, label='Статус поиска')
-
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.update()
+    
+    def update(self):
+        self.fields['gender'] = forms.MultipleChoiceField(choices=get_choices(resume_table.c.gender), widget=forms.SelectMultiple, required=False, label='Пол')
+        self.fields['roles'] = forms.MultipleChoiceField(choices=get_choices(role_table.c.role), widget=forms.SelectMultiple, required=False, label='Профессия')
+        self.fields['skills'] = forms.MultipleChoiceField(choices=get_choices(skill_table.c.skill), widget=forms.SelectMultiple, required=False, label='Навыки')
+        self.fields['search_status'] = forms.MultipleChoiceField(choices=get_choices(resume_table.c.search_status), widget=forms.SelectMultiple, required=False, label='Статус поиска')
+    
     def to_json(self):
         cleaned_data = self.cleaned_data
         for i in cleaned_data:

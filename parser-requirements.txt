@@ -7,3 +7,4 @@ redis
 requests
 celery
 SQLAlchemy
+celery-heimdall

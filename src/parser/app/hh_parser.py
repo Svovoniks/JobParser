@@ -14,39 +14,48 @@ class HH_parser:
     vacancy_url = "https://api.hh.ru/vacancies"
     resume_url = "https://hh.ru/search/resume"
     headers = {"HH-User-Agent": "newapp/1.0 (svovoniks@gmail.com)"}
+    
+    def __init__(self, hh_call_limiter) -> None:
+        self.hh_call_limiter = hh_call_limiter
+    
+    def get_call(self):
+        return self.hh_call_limiter.apply_async().wait(disable_sync_subtasks=False)
 
     def get_vacancies(self, template: VacancyRequest) -> list[Vacancy]:
+        self.get_call()
         rs = requests.get(self.vacancy_url, headers=self.headers, json=template.json)
         if not rs.status_code == 200:
             print("Error")
             return []
-        
-        vacancies = self._get_vacancy_form_page(0, template=template)
-        
+
+        vacancies = self._get_vacancy_form_page(0, template)
+
         logging.info(rs.json()['pages'])
         for i in range(1, rs.json()['pages']):
             logging.info(f"Getting page {i}")
             vacancies.extend(self._get_vacancy_form_page(i, template))
-        
+
         return list(filter(lambda a: a != None, vacancies))
-    
+
     def _get_vacancy_form_page(self, page_number: int, template: VacancyRequest):
+        self.get_call()
         rs = requests.get(self.vacancy_url+template.with_page(page_number).build_suburl(), headers=self.headers)
 
         if not rs.status_code == 200:
             print("Error")
             return []
-            
+
         return [self._get_vacancy_by_id(vacancy['id']) for vacancy in rs.json()["items"]]
 
     def _get_vacancy_by_id(self, vacancy_id: str):
+        self.get_call()
         rs = requests.get(f'{self.vacancy_url}/{vacancy_id}', headers=self.headers)
 
         if not rs.status_code == 200:
             print('Error')
             print(rs.text)
             return None
-        
+
         return Vacancy.from_json(rs.json())
 
     def get_resumes(self, template: ResumeRequest):
@@ -61,13 +70,13 @@ class HH_parser:
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         selenium_driver = Service()
-        
+
         browser = webdriver.Firefox(options=options,service=selenium_driver)
         url = self.resume_url+template.build_suburl()
         browser.get(url)
-        
+
         mx_page = None
-        
+
         try:
             pager = browser.find_element(By.XPATH, '//div[@class="pager" and @data-qa="pager-block"]')
             page_numbers = pager.find_elements(By.XPATH, './/a[@data-qa="pager-page"]')
@@ -79,29 +88,30 @@ class HH_parser:
         resumes = self._get_resumes_from_page(browser)
         mx_page = min(mx_page, 2)
         for i in range(1, mx_page):
+            self.get_call()
             browser.get(url+f"&page={i}")
             resumes.extend(self._get_resumes_from_page(browser))
             if len(resumes) >= 50:
                 break
-        
+
         browser.quit()
-        
+
         return resumes
-    
+
     def _get_resumes_from_page(self, browser: WebDriver):
         resumes = []
         hrefs = None
-        
+
         try:
             resume_cards = browser.find_elements(By.XPATH, "//a[@data-qa='serp-item__title']")
             hrefs = [card.get_attribute('href') for card in resume_cards]
         except:
             return []
-        
+
         for i in hrefs:
+            self.get_call()
             browser.get(i)
             logging.info(f"Getting resume {i}")
             resumes.append(Resume().from_browser(browser))
-        
+
         return resumes
-    

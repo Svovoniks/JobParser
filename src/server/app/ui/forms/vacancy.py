@@ -111,6 +111,7 @@ class VacancyFilterForm(forms.Form):
     roles = forms.MultipleChoiceField(choices=get_choices(role_table.c.role), widget=forms.SelectMultiple, required=False, label='Профессия')
     salary_from = forms.IntegerField(required=False, label='Зарплата от')
     salary_to = forms.IntegerField(required=False, label='Зарплата до')
+    currency = forms.MultipleChoiceField(choices=get_choices(vacancy_table.c.currency), widget=forms.SelectMultiple, required=False, label='Валюта')
     skills = forms.MultipleChoiceField(choices=get_choices(skill_table.c.skill), widget=forms.SelectMultiple, required=False, label='Навыки')
     date_from = forms.DateField(
         required=False,
@@ -135,6 +136,7 @@ class VacancyFilterForm(forms.Form):
         self.fields['experience'] = forms.MultipleChoiceField(choices=get_choices(vacancy_table.c.experience), widget=forms.SelectMultiple, label='Опыт', required=False)
         self.fields['employer'] = forms.MultipleChoiceField(choices=get_choices(vacancy_table.c.employer), widget=forms.SelectMultiple, label='Компания', required=False)
         self.fields['roles'] = forms.MultipleChoiceField(choices=get_choices(role_table.c.role), widget=forms.SelectMultiple, label='Профессия', required=False)
+        self.fields['currency'] = forms.MultipleChoiceField(choices=get_choices(vacancy_table.c.currency), widget=forms.SelectMultiple, label='Валюта', required=False)
         self.fields['skills'] = forms.MultipleChoiceField(choices=get_choices(skill_table.c.skill), widget=forms.SelectMultiple, label='Навыки', required=False)
         
     def to_json(self):

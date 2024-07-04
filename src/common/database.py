@@ -395,6 +395,9 @@ class DataBase(metaclass=Singleton):
         if vacancy['employer'] !=  None:
             select_statement =  select_statement.where(vacancy_table.c.employer.in_(vacancy['employer']))
 
+        if vacancy['currency'] !=  None:
+            select_statement =  select_statement.where(vacancy_table.c.currency.in_(vacancy['currency']))
+
         if vacancy['date_from'] != None:
             select_statement = select_statement.where(vacancy_table.c.published_at >= datetime.strptime(vacancy['date_from'], '%Y-%m-%d'))
 

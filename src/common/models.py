@@ -88,7 +88,7 @@ class Vacancy:
         vacancy = Vacancy(
             vacancy_id=try_get(json, 'id'),
             name=try_get(json, 'name'),
-            area=try_get(try_get(json, 'agea'), 'name'),
+            area=try_get(try_get(json, 'area'), 'name'),
             salary_from=try_get(try_get(json, 'salary'), 'from'),
             salary_to=try_get(try_get(json, 'salary'), 'to'),
             currency=try_get(try_get(json, 'salary'), 'currency'),
